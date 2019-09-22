@@ -15,6 +15,7 @@ int main(int argc, char **argv)
     tuple<double, double> results; // シミュレーション結果取得用変数
     double start_time = 1000.0;    // 過渡状態とみなすまでの時間
     double end_time = 11000.0;     // シミュレーション終了時間
+    // double end_time = 10.0;     // シミュレーション終了時間
     int trials = 10;
     /* コマンドライン引数の定義
     // −a 数値 とすると到着率　初期値は 1.0

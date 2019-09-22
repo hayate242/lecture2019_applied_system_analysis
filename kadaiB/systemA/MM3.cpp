@@ -66,12 +66,13 @@ std::tuple<double, double> MM3::simulation(double lambda, double mu, double star
                     cnt_in_service++;
                 }
             }
-            visitors += cnt_in_service + systems[0].size() + systems[1].size() + systems[2].size();
+            visitors += cnt_in_service + systems[0].size() + systems[1].size() + systems[2].size() - 1.0;
+            // visitors += systems[0].size() + systems[1].size() + systems[2].size();
             // printf("visitors = %f\n", visitors);
 
             // printf("%f - %f ,staytime = %f\n", currentTime, service[event.selectedLine], currentTime - service[event.selectedLine]);
             stayTime += currentTime - service[event.selectedLine];
-            // printf("stayTime = %f\n", stayTime);
+            // printf("currentTime= %f, service[%d] = %f, stayTime = %f\n", currentTime, event.selectedLine, service[event.selectedLine], stayTime);
             simEndJobs++;
 
             // 窓口のクリア（先頭の要素だけ削除）
@@ -92,7 +93,7 @@ std::tuple<double, double> MM3::simulation(double lambda, double mu, double star
                 // {for(int i=0;i<service.size();i++) printf("%f,",service[i]);}
                 // printf("size = %lu\n", service.size());
                 // イベントキューへのサービス到着イベントの登録
-                event.selectedLine = random.genRand(0, 2);
+                event.selectedLine = i;
                 event.time = currentTime + random.expDistribution(mu);
                 event.eventState = FINISH;
                 eventQueue.push(event);
