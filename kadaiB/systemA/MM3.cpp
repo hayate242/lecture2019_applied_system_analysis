@@ -67,7 +67,6 @@ std::tuple<double, double> MM3::simulation(double lambda, double mu, double star
                 }
             }
             visitors += cnt_in_service + systems[0].size() + systems[1].size() + systems[2].size() - 1.0;
-            // visitors += systems[0].size() + systems[1].size() + systems[2].size();
             // printf("visitors = %f\n", visitors);
 
             // printf("%f - %f ,staytime = %f\n", currentTime, service[event.selectedLine], currentTime - service[event.selectedLine]);
