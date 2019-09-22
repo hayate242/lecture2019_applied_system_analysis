@@ -8,7 +8,7 @@ std::tuple<double, double> MM3::simulation(double lambda, double mu, double star
     // 初期化
     vector<double> service;    // 窓口
     queue<double> systems[SERVICE_NUM]; //待ち行列
-    int selectedLine;
+    int lastSelectedLine;
     Random random;             // ランダムクラスの宣言
     SimStat simStat = StandBy; // 過渡状態、過渡状態以降を定義
     double service_interval;   // サービス間隔
@@ -69,7 +69,7 @@ std::tuple<double, double> MM3::simulation(double lambda, double mu, double star
             visitors += cnt_in_service + systems[0].size() + systems[1].size() + systems[2].size();
             // printf("visitors = %f\n", visitors);
 
-            printf("%f - %f ,staytime = %f\n", currentTime, service[event.selectedLine], currentTime - service[event.selectedLine]);
+            // printf("%f - %f ,staytime = %f\n", currentTime, service[event.selectedLine], currentTime - service[event.selectedLine]);
             stayTime += currentTime - service[event.selectedLine];
             // printf("stayTime = %f\n", stayTime);
             simEndJobs++;
@@ -82,19 +82,22 @@ std::tuple<double, double> MM3::simulation(double lambda, double mu, double star
             break;
         }
         // 3つの列の窓口で，並んでる列の窓口に人がいなくて，待ち行列に人がいる場合
-        if (service[event.selectedLine] == -1.0 && systems[event.selectedLine].empty() == false)
-        {
-            // 待ち行列の先頭から窓口への移動
-            service[event.selectedLine] = systems[event.selectedLine].front();
-            systems[event.selectedLine].pop();
-            // debug
-            // {for(int i=0;i<service.size();i++) printf("%f,",service[i]);}
-            // printf("size = %lu\n", service.size());
-            // イベントキューへのサービス到着イベントの登録
-            event.selectedLine = random.genRand(0, 2);
-            event.time = currentTime + random.expDistribution(mu);
-            event.eventState = FINISH;
-            eventQueue.push(event);
+        for (int i = 0; i < SERVICE_NUM; i++){
+            if (service[i] == -1.0 && systems[i].empty() == false)
+            {
+                // 待ち行列の先頭から窓口への移動
+                service[i] = systems[i].front();
+                systems[i].pop();
+                // debug
+                // {for(int i=0;i<service.size();i++) printf("%f,",service[i]);}
+                // printf("size = %lu\n", service.size());
+                // イベントキューへのサービス到着イベントの登録
+                event.selectedLine = random.genRand(0, 2);
+                event.time = currentTime + random.expDistribution(mu);
+                event.eventState = FINISH;
+                eventQueue.push(event);
+                break;
+            }
         }
 
     }

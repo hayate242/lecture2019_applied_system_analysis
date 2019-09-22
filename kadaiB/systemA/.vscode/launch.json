@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "(lldb) Launch",
-            "type": "cppdbg",
+            "type": "lldb",
             "request": "launch",
             "program": "${workspaceFolder}/a.out",
             "args": [
@@ -17,7 +17,7 @@
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
-            "MIMode": "lldb"
+            // "MIMode": "lldb"
         }
     ]
 }
