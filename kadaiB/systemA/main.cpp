@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     p.add<double>("arrival",'a', "arrival rate", false, 1.0);
     p.add<double>("service",'s', "service rate", false, 2.0);
     p.parse_check(argc, argv);
-    double lambda = p.get<double>("arrival"); // 到着率
+    double lambda = p.get<double>("arrival") / 3; // 到着率 * 1/3
     double mu = p.get<double>("service");     // サービス率
 
     rho = (lambda / mu); // 到着率およびサービス率から利用率算出
