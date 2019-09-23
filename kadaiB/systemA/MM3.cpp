@@ -8,7 +8,6 @@ std::tuple<double, double> MM3::simulation(double lambda, double mu, double star
     // 初期化
     vector<double> service;    // 窓口
     queue<double> systems[SERVICE_NUM]; //待ち行列
-    int lastSelectedLine;
     Random random;             // ランダムクラスの宣言
     SimStat simStat = StandBy; // 過渡状態、過渡状態以降を定義
     double service_interval;   // サービス間隔
@@ -26,6 +25,8 @@ std::tuple<double, double> MM3::simulation(double lambda, double mu, double star
     for (int i = 0; i < SERVICE_NUM; i++){
         service.push_back(-1.0);
     }
+
+    int cnt_selectedLines[3] = {0,0,0};
 
     // 終了時間まで繰り返す
     while (currentTime < endTime)
@@ -54,8 +55,8 @@ std::tuple<double, double> MM3::simulation(double lambda, double mu, double star
             if (currentTime > startTime && simStat == StandBy)
             {
                 simStat = Execution;
-                stayTime = 0;
-                visitors = 0;
+                stayTime = 0.0;
+                visitors = 0.0;
                 simEndJobs = 0;
             }
             // 統計処理（待ち時間，客数等のカウント）
@@ -66,12 +67,13 @@ std::tuple<double, double> MM3::simulation(double lambda, double mu, double star
                     cnt_in_service++;
                 }
             }
-            visitors += cnt_in_service + systems[0].size() + systems[1].size() + systems[2].size() - 1.0;
+            cnt_selectedLines[event.selectedLine]++;
+            visitors += cnt_in_service + systems[0].size() + systems[1].size() + systems[2].size() - 1.0; //自分のサービス分，１引く
             // printf("visitors = %f\n", visitors);
 
             // printf("%f - %f ,staytime = %f\n", currentTime, service[event.selectedLine], currentTime - service[event.selectedLine]);
-            stayTime += currentTime - service[event.selectedLine];
-            // printf("currentTime= %f, service[%d] = %f, stayTime = %f\n", currentTime, event.selectedLine, service[event.selectedLine], stayTime);
+            stayTime += (currentTime - service[event.selectedLine]) / 2.0;
+            // printf("currentTime= %f, service[%d] = %f, stayTime = %f\n", currentTime, event.selectedLine, service[event.selectedLine], currentTime - service[event.selectedLine]);
             simEndJobs++;
 
             // 窓口のクリア（先頭の要素だけ削除）
@@ -101,6 +103,10 @@ std::tuple<double, double> MM3::simulation(double lambda, double mu, double star
         }
 
     }
+    for (int i = 0; i < SERVICE_NUM; i++){
+        printf("%d, ", cnt_selectedLines[i]);
+    }
+    printf("\n");
     // 結果の返却
     // return std::forward_as_tuple(システム内客数, システム内時間);
     return std::forward_as_tuple(visitors / simEndJobs, stayTime / simEndJobs);

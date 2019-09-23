@@ -40,8 +40,6 @@ int main(int argc, char **argv)
         results = mm1.simulation(lambda, mu, start_time, end_time);
         system_people = system_people + get<0>(results); // システム内客数を取得
         system_time = system_time + get<1>(results);     // システム内時間を取得
-        // fprintf(fp, "%lf,%lf,%lf\n", rho, get<0>(results), get<1>(results));
-        fprintf(fp, "%lf,", get<0>(results));
     }
     fprintf(fp, "\n");
     system_people = system_people / trials;
@@ -51,6 +49,7 @@ int main(int argc, char **argv)
     //ここ直すだけ
     double logical_ave_customers = rho / (1 - rho);
     double logical_ave_wait_time = (1/mu) *  (1 / (1 - rho));
+    fprintf(fp, "%s\t %s\t %s\n", "ρ", "システム内客数", "システム内時間");
     fprintf(fp, "% lf\t % lf\t % lf\n", rho, logical_ave_customers, logical_ave_wait_time);
     fprintf(fp, "% lf\t % lf\t % lf\n", rho, system_people, system_time);
     // printf("% lf\t % lf\t % lf\n", rho, system_people, system_time);

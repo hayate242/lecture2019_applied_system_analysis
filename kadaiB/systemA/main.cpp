@@ -2,6 +2,7 @@
 #include "cmdline.h"
 #include "MM3.hpp"
 #include <tuple>
+#define SERVICE_NUM 3
 using namespace std;
 
 int main(int argc, char **argv)
@@ -15,7 +16,6 @@ int main(int argc, char **argv)
     tuple<double, double> results; // シミュレーション結果取得用変数
     double start_time = 1000.0;    // 過渡状態とみなすまでの時間
     double end_time = 11000.0;     // シミュレーション終了時間
-    // double end_time = 10.0;     // シミュレーション終了時間
     int trials = 10;
     /* コマンドライン引数の定義
     // −a 数値 とすると到着率　初期値は 1.0
@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     p.add<double>("arrival",'a', "arrival rate", false, 1.0);
     p.add<double>("service",'s', "service rate", false, 2.0);
     p.parse_check(argc, argv);
-    double lambda = p.get<double>("arrival") / 3; // 到着率 * 1/3
+    double lambda = p.get<double>("arrival") / SERVICE_NUM; // 到着率 * 1/3
     double mu = p.get<double>("service");     // サービス率
 
     rho = (lambda / mu); // 到着率およびサービス率から利用率算出
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
         system_people = system_people + get<0>(results); // システム内客数を取得
         system_time = system_time + get<1>(results);     // システム内時間を取得
         // fprintf(fp, "%lf,%lf,%lf\n", rho, get<0>(results), get<1>(results));
-        fprintf(fp, "%lf,", get<0>(results));
+        // fprintf(fp, "%lf,", get<0>(results));
     }
     fprintf(fp, "\n");
     system_people = system_people / trials;

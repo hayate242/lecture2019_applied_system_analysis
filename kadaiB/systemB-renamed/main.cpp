@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 
     // 理論値および観測値を保存
     //ここ直すだけ
-    double logical_ave_customers = rho / (1 - rho);
+    double logical_ave_customers = (rho * (9-rho) * (rho + 3)) / ((3-rho) * ((rho * rho) - 4 * rho + 6));
     double logical_ave_wait_time = (1/mu) *  (1 / (1 - rho));
     // システム利用率ρ，システム内客数（サービスを受けている人＋サービスを待っている人），平均システム遅延（システム到着から出るまで）
     fprintf(fp, "% lf\t % lf\t % lf\n", rho, logical_ave_customers, logical_ave_wait_time);
