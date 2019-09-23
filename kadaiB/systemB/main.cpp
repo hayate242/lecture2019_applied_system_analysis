@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include "cmdline.h"
-#include "MM1.hpp"
+#include "MM3.hpp"
 #include <tuple>
 using namespace std;
 
 int main(int argc, char **argv)
 {
     // 初期化
-    MM1 mm1;                       // MM1 クラスの宣言
+    MM3 mm3;                       // MM3 クラスの宣言
     cmdline::parser p;             // コマンドライン引数用の宣言
     double rho;                    // 利用率
     double system_people = 0.0;    // システム内客数
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     // シミュレーション開始 (trials 回繰り返してその平均値を取得)
     for (int i = 0; i < trials; i++)
     {
-        results = mm1.simulation(lambda, mu, start_time, end_time);
+        results = mm3.simulation(lambda, mu, start_time, end_time);
         system_people = system_people + get<0>(results); // システム内客数を取得
         system_time = system_time + get<1>(results);     // システム内時間を取得
         // fprintf(fp, "%lf,%lf,%lf\n", rho, get<0>(results), get<1>(results));
@@ -49,8 +49,8 @@ int main(int argc, char **argv)
 
     // 理論値および観測値を保存
     //ここ直すだけ
-    double logical_ave_customers = rho / (1 - rho);
-    double logical_ave_wait_time = (1/mu) *  (1 / (1 - rho));
+    double logical_ave_customers = (rho * (9-rho) * (rho + 3)) / ((3-rho) * ((rho * rho) - 4 * rho + 6));
+    double logical_ave_wait_time = logical_ave_customers / lambda;
     // システム利用率ρ，システム内客数（サービスを受けている人＋サービスを待っている人），平均システム遅延（システム到着から出るまで）
     fprintf(fp, "% lf\t % lf\t % lf\n", rho, logical_ave_customers, logical_ave_wait_time);
     fprintf(fp, "% lf\t % lf\t % lf\n", rho, system_people, system_time);

@@ -13,7 +13,7 @@ std::tuple<double, double> MM3::simulation(double lambda, double mu, double star
     double service_interval;   // サービス間隔
     double arrive;             // 到着間隔
     currentTime = 0.0;
-    simEndJobs = 0;
+    simEndJobs = 0.0;
     stayTime = 0.0;
     visitors = 0.0;
     // 処理開始（最初のイベントをイベントキューに登録）
@@ -57,7 +57,7 @@ std::tuple<double, double> MM3::simulation(double lambda, double mu, double star
                 simStat = Execution;
                 stayTime = 0.0;
                 visitors = 0.0;
-                simEndJobs = 0;
+                simEndJobs = 0.0;
             }
             // 統計処理（待ち時間，客数等のカウント）
             int cnt_in_service = 0;
@@ -68,11 +68,11 @@ std::tuple<double, double> MM3::simulation(double lambda, double mu, double star
                 }
             }
             cnt_selectedLines[event.selectedLine]++;
-            visitors += cnt_in_service + systems[0].size() + systems[1].size() + systems[2].size() - 1.0; //自分のサービス分，１引く
+            visitors += cnt_in_service + systems[0].size() + systems[1].size() + systems[2].size(); //自分のサービス分，１引く
             // printf("visitors = %f\n", visitors);
 
             // printf("%f - %f ,staytime = %f\n", currentTime, service[event.selectedLine], currentTime - service[event.selectedLine]);
-            stayTime += (currentTime - service[event.selectedLine]) / 2.0;
+            stayTime += (currentTime - service[event.selectedLine]);
             // printf("currentTime= %f, service[%d] = %f, stayTime = %f\n", currentTime, event.selectedLine, service[event.selectedLine], currentTime - service[event.selectedLine]);
             simEndJobs++;
 

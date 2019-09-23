@@ -40,7 +40,7 @@ class MM3
         double currentTime;                                              // 現在時刻
         EVENT event;                                                     // イベントを格納する変数
         priority_queue<EVENT, vector<EVENT>, greater<EVENT>> eventQueue; // イベントキュー
-        int simEndJobs;                                                  // シミュレーション終了までに発生したジョブ数
+        double simEndJobs;                                                  // シミュレーション終了までに発生したジョブ数
         double stayTime;                                                 // 待ち時間
         double visitors;                                                 // 客数
     public:

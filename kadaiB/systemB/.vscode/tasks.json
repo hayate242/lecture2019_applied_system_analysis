@@ -11,7 +11,7 @@
                 "-g",
                 "-O0",
                 "-std=c++11",
-                "MM1.cpp",
+                "MM3.cpp",
                 "main.cpp",
                 "Random.cpp",
             ],
